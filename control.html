@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        button {
+            font-size: 40px;
+            width: 120px;
+            height: 80px;
+            margin: 10px;
+        }
+
+        #count {
+            font-size: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="count">0</div>
+
+    <button onclick="change(-1)">-1</button>
+    <button onclick="change(1)">+1</button>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        db.ref("counter").on("value", (snapshot) => {
+            document.getElementById("count").textContent =
+                snapshot.val() ?? 0;
+        });
+
+        function change(amount) {
+            db.ref("counter").transaction((current) => {
+                return (current || 0) + amount;
+            });
+        }
+    </script>
+
+</body>
+</html>
